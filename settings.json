@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "Bash(pytest *)",
+      "Bash(pip install *)",
+      "Bash(uv *)",
+      "Bash(ruff *)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command": "file=$(jq -r '.tool_input.file_path'); echo \"$file\" | grep -q '\\.py$' && ruff format --quiet \"$file\" || true"
+      }]
+    }]
+  }
+}
